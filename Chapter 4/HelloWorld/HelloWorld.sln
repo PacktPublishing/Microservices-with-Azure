@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "HelloWorldApplication", "HelloWorldApplication\HelloWorldApplication.sfproj", "{548DCC04-02D2-47F1-8B06-ADC81A7A8C2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldService", "HelloWorldService\HelloWorldService.csproj", "{4373FD03-B224-4C94-8A04-2F3A758ED436}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{548DCC04-02D2-47F1-8B06-ADC81A7A8C2A}.Debug|x64.ActiveCfg = Debug|x64
+		{548DCC04-02D2-47F1-8B06-ADC81A7A8C2A}.Debug|x64.Build.0 = Debug|x64
+		{548DCC04-02D2-47F1-8B06-ADC81A7A8C2A}.Debug|x64.Deploy.0 = Debug|x64
+		{548DCC04-02D2-47F1-8B06-ADC81A7A8C2A}.Release|x64.ActiveCfg = Release|x64
+		{548DCC04-02D2-47F1-8B06-ADC81A7A8C2A}.Release|x64.Build.0 = Release|x64
+		{548DCC04-02D2-47F1-8B06-ADC81A7A8C2A}.Release|x64.Deploy.0 = Release|x64
+		{4373FD03-B224-4C94-8A04-2F3A758ED436}.Debug|x64.ActiveCfg = Debug|x64
+		{4373FD03-B224-4C94-8A04-2F3A758ED436}.Debug|x64.Build.0 = Debug|x64
+		{4373FD03-B224-4C94-8A04-2F3A758ED436}.Release|x64.ActiveCfg = Release|x64
+		{4373FD03-B224-4C94-8A04-2F3A758ED436}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

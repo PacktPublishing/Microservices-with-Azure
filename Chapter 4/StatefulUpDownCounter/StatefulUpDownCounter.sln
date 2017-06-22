@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "StatefulUpDownCounterApplication", "StatefulUpDownCounterApplication\StatefulUpDownCounterApplication.sfproj", "{08461342-779B-477E-8329-C7CDE4BECA24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpDownCounterService", "UpDownCounterService\UpDownCounterService.csproj", "{2826D0CC-0140-4452-A028-942729710F48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08461342-779B-477E-8329-C7CDE4BECA24}.Debug|x64.ActiveCfg = Debug|x64
+		{08461342-779B-477E-8329-C7CDE4BECA24}.Debug|x64.Build.0 = Debug|x64
+		{08461342-779B-477E-8329-C7CDE4BECA24}.Debug|x64.Deploy.0 = Debug|x64
+		{08461342-779B-477E-8329-C7CDE4BECA24}.Release|x64.ActiveCfg = Release|x64
+		{08461342-779B-477E-8329-C7CDE4BECA24}.Release|x64.Build.0 = Release|x64
+		{08461342-779B-477E-8329-C7CDE4BECA24}.Release|x64.Deploy.0 = Release|x64
+		{2826D0CC-0140-4452-A028-942729710F48}.Debug|x64.ActiveCfg = Debug|x64
+		{2826D0CC-0140-4452-A028-942729710F48}.Debug|x64.Build.0 = Debug|x64
+		{2826D0CC-0140-4452-A028-942729710F48}.Release|x64.ActiveCfg = Release|x64
+		{2826D0CC-0140-4452-A028-942729710F48}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

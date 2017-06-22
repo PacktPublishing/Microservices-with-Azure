@@ -1,0 +1,5 @@
+D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Client\bin\Debug\Client.exe.config
+D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Client\bin\Debug\Client.exe
+D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Client\bin\Debug\Client.pdb
+D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Client\obj\Debug\Client.exe
+D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Client\obj\Debug\Client.pdb

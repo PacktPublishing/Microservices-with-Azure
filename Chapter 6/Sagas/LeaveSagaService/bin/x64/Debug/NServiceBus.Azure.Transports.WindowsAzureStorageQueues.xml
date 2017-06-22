@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NServiceBus.Azure.Transports.WindowsAzureStorageQueues</name>
+    </assembly>
+    <members>
+        <member name="T:NServiceBus.AzureStorageQueues.AtMostOnceReceiveStrategy">
+            <summary>
+            At-most-once receive strategy receives at most once, acking first, then processing the message.
+            If the pipeline fails, the message is not processed any longer. No first or second level retries are executed.
+            </summary>
+        </member>
+        <member name="T:NServiceBus.AzureStorageQueues.AzureMessageQueueCreator">
+            <summary>
+            Creates the queues. Note that this class will only be invoked when running the windows host and not when running in
+            the fabric
+            </summary>
+        </member>
+        <member name="P:NServiceBus.AzureStorageQueues.AzureMessageQueueReceiver.PeekInterval">
+            <summary>
+            Sets the amount of time, in milliseconds, to add to the time to wait before checking for a new message
+            </summary>
+        </member>
+        <member name="P:NServiceBus.AzureStorageQueues.AzureMessageQueueReceiver.MaximumWaitTimeWhenIdle">
+            <summary>
+            Sets the maximum amount of time that the queue will wait before checking for a new message
+            </summary>
+        </member>
+        <member name="P:NServiceBus.AzureStorageQueues.AzureMessageQueueReceiver.PurgeOnStartup">
+            <summary>
+            Sets whether or not the transport should purge the input
+            queue when it is started.
+            </summary>
+        </member>
+        <member name="P:NServiceBus.AzureStorageQueues.AzureMessageQueueReceiver.MessageInvisibleTime">
+            <summary>
+            Controls how long messages should be invisible to other callers when receiving messages from the queue
+            </summary>
+        </member>
+        <member name="P:NServiceBus.AzureStorageQueues.AzureMessageQueueReceiver.BatchSize">
+            <summary>
+            Controls the number of messages that will be read in bulk from the queue
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageQueues.MessageRetrieved.Unwrap">
+            <summary>
+            Unwraps the raw message body.
+            </summary>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">Thrown when the raw message could not be unwrapped. The raw message is automatically moved to the error queue before this exception is thrown.</exception>
+            <returns>The actual message wrapper.</returns>
+        </member>
+        <member name="M:NServiceBus.AzureStorageQueues.MessageRetrieved.Ack">
+            <summary>
+            Acknowledges the successful processing of the message.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageQueues.MessageRetrieved.Nack">
+            <summary>
+            Rejects the message requeueing it in the queue.
+            </summary>
+        </member>
+        <member name="T:NServiceBus.AccountConfigurations">
+            <summary>
+            Holds mappings for used accounts.
+            </summary>
+        </member>
+        <member name="T:NServiceBus.AccountRoutingSettings">
+            <summary>
+            Provides methods to define routing between Azure Storage accounts and map them to a logical alias instead of using bare
+            connection strings.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AccountRoutingSettings.AddAccount(System.String,System.String)">
+            <summary>
+            Adds the mapping between the <paramref alias="alias" /> and its <paramref alias="connectionString" />.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageAddressingSettings.Map(System.String)">
+            <summary>
+            Maps the account name to a connection string, throwing when no mapping found.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageAddressingSettings.ApplyMappingToAliases(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Transforms all the <see cref="T:NServiceBus.AzureStorageQueues.Config.QueueAddress" /> in <see cref="F:NServiceBus.AzureStorageAddressingSettings.headersToApplyNameMapping" /> to use logical names.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageAddressingSettings.ApplyMappingOnOutgoingHeaders(System.Collections.Generic.Dictionary{System.String,System.String},NServiceBus.AzureStorageQueues.Config.QueueAddress)">
+            <summary>
+            Transforms all the <see cref="T:NServiceBus.AzureStorageQueues.Config.QueueAddress" /> in <see cref="F:NServiceBus.AzureStorageAddressingSettings.headersToApplyNameMapping" /> to connection string
+            values to maintain backward compatibility.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportAddressingExtensions.AccountRouting(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport})">
+            <summary>
+            Provides access to configure cross account routing.
+            </summary>
+        </member>
+        <member name="T:NServiceBus.AzureStorageQueueTransport">
+            <summary>
+            Transport definition for AzureStorageQueue
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportExtensions.PeekInterval(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport},System.TimeSpan)">
+            <summary>
+            Sets the amount of time to add to the time to wait before checking for a new message
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportExtensions.MaximumWaitTimeWhenIdle(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport},System.TimeSpan)">
+            <summary>
+            Sets the maximum amount of time, in milliseconds, that the queue will wait before checking for a new message
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportExtensions.MessageInvisibleTime(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport},System.TimeSpan)">
+            <summary>
+            Controls how long messages should be invisible to other callers when receiving messages from the queue
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportExtensions.BatchSize(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport},System.Int32)">
+            <summary>
+            Controls how many messages should be read from the queue at once
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportExtensions.SerializeMessageWrapperWith``1(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport})">
+            <summary>
+            Sets a custom serialization for <see cref="T:NServiceBus.Azure.Transports.WindowsAzureStorageQueues.MessageWrapper" /> if your configurations uses serialization different
+            from <see cref="T:NServiceBus.XmlSerializer" /> or <see cref="T:NServiceBus.JsonSerializer" />.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportExtensions.UseSha1ForShortening(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport})">
+            <summary>
+            Overrides default Md5 shortener for creating queue names with Sha1 shortener.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTransportExtensions.DegreeOfReceiveParallelism(NServiceBus.TransportExtensions{NServiceBus.AzureStorageQueueTransport},System.Int32)">
+            <summary>
+            Sets the degree of parallelism that should be used to receive messages.
+            </summary>
+        </member>
+    </members>
+</doc>

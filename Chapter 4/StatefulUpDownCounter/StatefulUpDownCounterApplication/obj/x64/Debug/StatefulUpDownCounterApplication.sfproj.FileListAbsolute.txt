@@ -1,0 +1,1 @@
+D:\Source Control\microserviceswithazure-code\chapter-4\StatefulUpDownCounter\StatefulUpDownCounterApplication\obj\x64\Debug\StatefulUpDownCounterApplication.sfprojResolveAssemblyReference.cache

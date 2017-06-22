@@ -1,0 +1,1 @@
+D:\Source Control\microserviceswithazure-code\chapter-4\HelloWorld\HelloWorldApplication\obj\x64\Debug\HelloWorldApplication.sfprojResolveAssemblyReference.cache

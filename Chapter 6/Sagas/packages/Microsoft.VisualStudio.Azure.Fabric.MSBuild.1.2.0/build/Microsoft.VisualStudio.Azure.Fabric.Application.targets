@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+***********************************************************************************************
+Microsoft.VisualStudio.Azure.Fabric.Application.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+This file defines the steps in the standard build process for building and packaging Service Fabric applications.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+***********************************************************************************************
+-->
+
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <PackageLocation Condition=" '$(PackageLocation)' == '' ">pkg\$(Configuration)</PackageLocation>
+    <PackageBehavior Condition=" '$(PackageBehavior)' == '' ">All</PackageBehavior>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BuildTasksAssembly>Microsoft.VisualStudio.Azure.Fabric.BuildTasks.dll</BuildTasksAssembly>
+    <ApplicationPackageRootFolder>ApplicationPackageRoot</ApplicationPackageRootFolder>
+    <ApplicationManifestFilePath>$(ApplicationPackageRootFolder)\ApplicationManifest.xml</ApplicationManifestFilePath>
+    <ServicePackageRootFolder>PackageRoot</ServicePackageRootFolder>
+    <ReferencedProjectCommonBuildProperties>Configuration=$(Configuration);Platform=$(Platform)</ReferencedProjectCommonBuildProperties>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludeInPackagePaths Condition=" '$(PackageBehavior)' == 'Minimal' "
+                           Include="$(IncludeInPackage)" />
+  </ItemGroup>
+
+  <UsingTask TaskName="FilterPackageFiles" AssemblyFile="$(BuildTasksAssembly)" />
+  <UsingTask TaskName="FindServiceManifests" AssemblyFile="$(BuildTasksAssembly)" />
+  <UsingTask TaskName="FindTargetPath" AssemblyFile="$(BuildTasksAssembly)" />
+  <UsingTask TaskName="GetApplicationParametersFiles" AssemblyFile="$(BuildTasksAssembly)" />
+  <UsingTask TaskName="GetPackageRootFiles" AssemblyFile="$(BuildTasksAssembly)" />
+  <UsingTask TaskName="GetServiceProjectReferences" AssemblyFile="$(BuildTasksAssembly)" />
+  <UsingTask TaskName="ValidatePackageSettings" AssemblyFile="$(BuildTasksAssembly)" />
+  <UsingTask TaskName="VerifyVersionCompatibility" AssemblyFile="$(BuildTasksAssembly)" />
+
+  <Target Name="CreateManifestResourceNames" />
+  <Target Name="CoreCompile" />
+
+  <ItemDefinitionGroup>
+    <ProjectReference>
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
+  <PropertyGroup>
+    <PackageAction>Package</PackageAction>
+    <PackageDependsOn>
+      ValidatePackageSettings;
+      GetServiceProjectReferences;
+      CleanApplicationPackage;
+      Build;
+      CollectServiceCodeFiles;
+      PackageServices;
+      PackageDotNetCoreServices;
+      PackageApplication;
+      CollectPackageFiles;
+    </PackageDependsOn>
+  </PropertyGroup>
+
+  <!-- Generates a Service Fabric application package for this project. -->
+  <Target Name="Package" DependsOnTargets="$(PackageDependsOn)" Returns="@(_AllPackageFiles)" />
+
+  <Target Name="ValidatePackageSettings">
+    <ValidatePackageSettings PackageBehavior="$(PackageBehavior)" IncludeInPackage="$(IncludeInPackage)" />
+  </Target>
+
+  <!-- Adds a metadata value to each ProjectReference indicating what the project's ServiceManifestName is. -->
+  <Target Name="GetServiceProjectReferences"
+          Condition=" '@(ProjectReference)' != '' ">
+
+    <GetServiceProjectReferences ProjectReferences="@(ProjectReference)"
+                                 ServicePackageRootFolder="$(ServicePackageRootFolder)"
+                                 ApplicationManifestPath="$(ApplicationManifestFilePath)"
+                                 IncludeInPackagePaths="@(IncludeInPackagePaths)"
+                                 PackageBehavior="$(PackageBehavior)">
+      <Output TaskParameter="ServiceProjectReferences" ItemName="ServiceProjectReference" />
+      <Output TaskParameter="DotNetCoreServiceProjectReferences" ItemName="DotNetCoreServiceProjectReference" />
+    </GetServiceProjectReferences>
+
+    <ItemGroup>
+      <ServiceProjectReferencesWithCodePackage Include="@(ServiceProjectReference)"
+                                               Condition=" '%(IncludeServiceInPackage)' == 'true' and '%(IncludeCodePackage)' == 'true' " />
+    </ItemGroup>
+
+  </Target>
+
+  <!-- Removes the previous application package if it exists. -->
+  <Target Name="CleanApplicationPackage">
+    <Exec Command="rmdir /Q /S &quot;$(PackageLocation)&quot;" Condition="Exists('$(PackageLocation)')" />
+  </Target>
+
+  <!-- Collect service code files for non-DotNetCore service projects. -->
+  <Target Name="CollectServiceCodeFiles"
+          Condition=" '@(ServiceProjectReferencesWithCodePackage)' != '' "
+          Outputs="%(ServiceProjectReferencesWithCodePackage.Identity)">
+
+    <PropertyGroup>
+      <_ServiceProject>%(ServiceProjectReferencesWithCodePackage.Identity)</_ServiceProject>
+      <_ServiceManifestName>%(ServiceProjectReferencesWithCodePackage.ServiceManifestName)</_ServiceManifestName>
+      <_CodePackageName>%(ServiceProjectReferencesWithCodePackage.CodePackageName)</_CodePackageName>
+    </PropertyGroup>
+
+    <MSBuild
+        Projects="$(_ServiceProject)"
+        Targets="GetTargetPath"
+        Properties="$(ReferencedProjectCommonBuildProperties)">
+      <Output TaskParameter="TargetOutputs" ItemName="ReferenceTargetPathItem" />
+    </MSBuild>
+
+    <PropertyGroup>
+      <ProjectTargetDir Condition=" '@(ReferenceTargetPathItem)' != '' ">%(RootDir)%(Directory)</ProjectTargetDir>
+      <ProjectEntryPoint Condition=" '@(ReferenceTargetPathItem)' != '' ">%(Filename)%(Extension)</ProjectEntryPoint>
+    </PropertyGroup>
+
+    <MSBuild
+        Projects="$(_ServiceProject)"
+        Targets="
+          BuiltProjectOutputGroup;
+          DebugSymbolsProjectOutputGroup;
+          DocumentationProjectOutputGroup;
+          SatelliteDllsProjectOutputGroup;
+          SGenFilesOutputGroup"
+        Properties="$(ReferencedProjectCommonBuildProperties)"
+        ContinueOnError="false">
+      <Output TaskParameter="TargetOutputs" ItemName="OutputGroups" />
+    </MSBuild>
+    <ItemGroup>
+      <_ServiceFiles Include="@(OutputGroups)">
+        <TargetPath>%(OutputGroups.TargetPath)</TargetPath>
+      </_ServiceFiles>
+    </ItemGroup>
+    <MSBuild
+        Projects="$(_ServiceProject)"
+        Targets="SourceFilesProjectOutputGroup"
+        Properties="$(ReferencedProjectCommonBuildProperties)"
+        ContinueOnError="false">
+      <Output TaskParameter="TargetOutputs" ItemName="SourceFilesOutputGroup" />
+    </MSBuild>
+    <!-- Add the app config file from SourceFilesOutputGroup -->
+    <ItemGroup>
+      <_ServiceFiles Include="$(ProjectTargetDir)%(TargetPath)" Condition=" '%(SourceFilesOutputGroup.Filename)%(SourceFilesOutputGroup.Extension)' == 'app.config' And '%(SourceFilesOutputGroup.TargetPath)' == '$(ProjectEntryPoint).config' ">
+        <TargetPath>%(TargetPath)</TargetPath>
+      </_ServiceFiles>
+    </ItemGroup>
+    <!-- ===============================
+         Get all the dependency output groups for the service project 
+         =============================== -->
+    <MSBuild
+        Projects="$(_ServiceProject)"
+        Targets="
+          BuiltProjectOutputGroupDependencies;
+          DebugSymbolsProjectOutputGroupDependencies;
+          DocumentationProjectOutputGroupDependencies;
+          SGenFilesOutputGroupDependencies"
+        ContinueOnError="false"
+        Properties="$(ReferencedProjectCommonBuildProperties)">
+      <Output TaskParameter="TargetOutputs" ItemName="OutputGroupsDependencies" />
+    </MSBuild>
+
+    <!-- Figure out the dependencies that need to be copied by checking if the dependency exists
+         in the target directory. -->
+    <ItemGroup>
+      <CopyLocalDependencies Include="@(OutputGroupsDependencies)" Condition="Exists('$(ProjectTargetDir)%(Filename)%(Extension)')" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ServiceFiles Include="@(CopyLocalDependencies)" Condition=" '@(CopyLocalDependencies)' != '' ">
+        <TargetPath>%(FileName)%(Extension)</TargetPath>
+      </_ServiceFiles>
+    </ItemGroup>
+    <!-- Get all satellite dependencies -->
+    <MSBuild
+      Projects="$(_ServiceProject)"
+      Targets="SatelliteDllsProjectOutputGroupDependencies"
+      ContinueOnError="false"
+      Properties="$(ReferencedProjectCommonBuildProperties)">
+      <Output TaskParameter="TargetOutputs" ItemName="SatelliteOutputGroupsDependencies" />
+    </MSBuild>
+    <FindTargetPath Files="@(SatelliteOutputGroupsDependencies)" FindUnderTargetDir="$(ProjectTargetDir)">
+      <Output TaskParameter="ItemWithTargetPath" ItemName="SatelliteOutputGroupsDependenciesWithTargetPath" />
+    </FindTargetPath>
+    <ItemGroup>
+      <_ServiceFiles Include="@(SatelliteOutputGroupsDependenciesWithTargetPath)" Condition=" '@(SatelliteOutputGroupsDependenciesWithTargetPath)' != '' ">
+        <TargetPath>%(TargetPath)</TargetPath>
+      </_ServiceFiles>
+    </ItemGroup>
+    <!-- Get all CopyToOutput items from the service project -->
+    <MSBuild
+        Projects="$(_ServiceProject)"
+        Targets="GetCopyToOutputDirectoryItems"
+        ContinueOnError="false"
+        Properties="$(ReferencedProjectCommonBuildProperties)">
+      <Output TaskParameter="TargetOutputs" ItemName="ProjectCopyToOutputItems" />
+    </MSBuild>
+    <ItemGroup>
+      <_ServiceFiles Include="$(ProjectTargetDir)%(ProjectCopyToOutputItems.TargetPath)"
+                     Condition=" '@(ProjectCopyToOutputItems)' != '' ">
+        <TargetPath>%(TargetPath)</TargetPath>
+      </_ServiceFiles>
+    </ItemGroup>
+
+    <RemoveDuplicates Inputs="@(_ServiceFiles)">
+      <Output TaskParameter="Filtered" ItemName="ServiceCodeFiles" />
+    </RemoveDuplicates>
+
+    <ItemGroup>
+      <ServiceCodeFiles>
+        <RelativePackagePath>$(_ServiceManifestName)\$(_CodePackageName)\%(TargetPath)</RelativePackagePath>
+      </ServiceCodeFiles>
+    </ItemGroup>
+  </Target>
+
+  <!-- Packages each of the referenced non-DotNetCore service projects. -->
+  <Target Name="PackageServices" Condition=" '@(ServiceProjectReference)' != '' ">
+
+    <GetPackageRootFiles ProjectPath="%(ServiceProjectReference.Identity)"
+                         PackageRootFolderPath="$(ServicePackageRootFolder)"
+                         DestinationPath="%(ServiceProjectReference.ServiceManifestName)">
+      <Output TaskParameter="PackageRootFiles" ItemName="_ServicePackageRootFiles" />
+    </GetPackageRootFiles>
+
+    <FilterPackageFiles PackageBehavior="$(PackageBehavior)"
+                        IncludeInPackagePaths="@(IncludeInPackagePaths)"
+                        PackageFiles="@(_ServicePackageRootFiles)"
+                        PackageType="Service">
+      <Output TaskParameter="FilteredPackageFiles" ItemName="_ServicePackageRootFilesFiltered" />
+    </FilterPackageFiles>
+
+    <ItemGroup>
+      <_AllServicePackageFilesTemp Include="@(_ServicePackageRootFilesFiltered);@(ServiceCodeFiles)" />
+      <_AllServicePackageFilesTemp>
+        <Destination>$([System.IO.Path]::GetFullPath('$(PackageLocation)\%(RelativePackagePath)'))</Destination>
+      </_AllServicePackageFilesTemp>
+    </ItemGroup>
+
+    <Copy SkipUnchangedFiles="true"
+          SourceFiles="@(_AllServicePackageFilesTemp)"
+          DestinationFiles="@(_AllServicePackageFilesTemp->'%(Destination)')" />
+  </Target>
+
+  <!-- Packages each of the referenced DotNetCore service projects. -->
+  <Target Name="PackageDotNetCoreServices"
+          Condition=" '@(DotNetCoreServiceProjectReference)' != '' "
+          Outputs="%(DotNetCoreServiceProjectReference.Identity)">
+
+    <PropertyGroup>
+      <_PublishUrl>$([System.IO.Path]::GetFullPath('$(PackageLocation)\%(DotNetCoreServiceProjectReference.ServiceManifestName)\%(DotNetCoreServiceProjectReference.CodePackageName)'))</_PublishUrl>
+    </PropertyGroup>
+
+    <MSBuild Projects="%(DotNetCoreServiceProjectReference.Identity)"
+             Properties="$(ReferencedProjectCommonBuildProperties);DeployOnBuild=true;PublishUrl=$(_PublishUrl)"
+             Condition=" '%(DotNetCoreServiceProjectReference.IncludeCodePackage)' == 'true' "/>
+
+    <GetPackageRootFiles ProjectPath="%(DotNetCoreServiceProjectReference.Identity)"
+                         PackageRootFolderPath="$(ServicePackageRootFolder)"
+                         DestinationPath="%(DotNetCoreServiceProjectReference.ServiceManifestName)">
+      <Output TaskParameter="PackageRootFiles" ItemName="_DotNetCoreServicePackageRootFiles" />
+    </GetPackageRootFiles>
+
+    <FilterPackageFiles PackageBehavior="$(PackageBehavior)"
+                        IncludeInPackagePaths="@(IncludeInPackagePaths)"
+                        PackageFiles="@(_DotNetCoreServicePackageRootFiles)"
+                        PackageType="Service">
+      <Output TaskParameter="FilteredPackageFiles" ItemName="_DotNetCoreServicePackageRootFilesFiltered" />
+    </FilterPackageFiles>
+
+    <ItemGroup>
+      <_DotNetCoreServicePackageFilesTemp Include="@(_DotNetCoreServicePackageRootFilesFiltered)" />
+      <_DotNetCoreServicePackageFilesTemp>
+        <Destination>$([System.IO.Path]::GetFullPath('$(PackageLocation)\%(RelativePackagePath)'))</Destination>
+      </_DotNetCoreServicePackageFilesTemp>
+    </ItemGroup>
+
+    <Copy SkipUnchangedFiles="true"
+          SourceFiles="@(_DotNetCoreServicePackageFilesTemp)"
+          DestinationFiles="@(_DotNetCoreServicePackageFilesTemp->'%(Destination)')" />
+  </Target>
+
+  <!-- Packages the application project components. -->
+  <Target Name="PackageApplication">
+    <GetPackageRootFiles ProjectPath="$(MSBuildProjectFullPath)"
+                         PackageRootFolderPath="$(ApplicationPackageRootFolder)"
+                         DestinationPath="">
+      <Output TaskParameter="PackageRootFiles" ItemName="_ApplicationPackageRootFiles" />
+    </GetPackageRootFiles>
+
+    <FilterPackageFiles PackageBehavior="$(PackageBehavior)"
+                        IncludeInPackagePaths="@(IncludeInPackagePaths)"
+                        PackageFiles="@(_ApplicationPackageRootFiles)"
+                        PackageType="Application">
+      <Output TaskParameter="FilteredPackageFiles" ItemName="_ApplicationPackageRootFilesFiltered" />
+    </FilterPackageFiles>
+
+    <ItemGroup>
+      <_ApplicationPackageRootFilesFiltered>
+        <Destination>$([System.IO.Path]::GetFullPath('$(PackageLocation)\%(RelativePackagePath)'))</Destination>
+      </_ApplicationPackageRootFilesFiltered>
+    </ItemGroup>
+
+    <Copy SkipUnchangedFiles="true"
+          SourceFiles="@(_ApplicationPackageRootFilesFiltered)"
+          DestinationFiles="%(Destination)" />
+  </Target>
+
+  <!-- Collects package files. -->
+  <Target Name="CollectPackageFiles">
+    <Message Text="$(MSBuildProjectName) -> $([System.IO.Path]::GetFullPath($(PackageLocation)))" Importance="High" />
+    <ItemGroup>
+      <_AllPackageFiles Include="$(PackageLocation)\**" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="IncludePackageLocationOnClean" BeforeTargets="BeforeClean">
+    <ItemGroup>
+      <Clean Include="$(PackageLocation)\**" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Needed to ensure that other projects referenced from services are included in service code packages. -->
+  <Target Name="EnsureProjectReferencesAreConfigured" BeforeTargets="GetCopyToOutputDirectoryItems">
+    <MSBuild
+        Condition=" '@(ServiceProjectReference)' != ''"
+        Projects="@(ServiceProjectReference)"
+        Targets="AssignProjectConfiguration"
+        Properties="$(ReferencedProjectCommonBuildProperties)" />
+  </Target>
+
+  <Target Name="VerifyVersionCompatibility" BeforeTargets="Build">
+    <VerifyVersionCompatibility PackageVersion="$(ApplicationMSBuildNuGetPackageVersion)" ProjectVersion="$(ProjectVersion)" />
+  </Target>
+</Project>
