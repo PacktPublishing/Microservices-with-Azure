@@ -11,9 +11,11 @@
 
     public class HttpCommunicationClientFactory : CommunicationClientFactoryBase<HttpCommunicationClient>
     {
-        private HttpClient httpClient = new HttpClient();
+        private readonly HttpClient httpClient = new HttpClient();
 
-        public HttpCommunicationClientFactory(IServicePartitionResolver resolver = null, IEnumerable<IExceptionHandler> exceptionHandlers = null)
+        public HttpCommunicationClientFactory(
+            IServicePartitionResolver resolver = null,
+            IEnumerable<IExceptionHandler> exceptionHandlers = null)
             : base(resolver, CreateExceptionHandlers(exceptionHandlers))
         {
         }
@@ -24,7 +26,9 @@
             // HTTP clients don't hold persistent connections, so no action is taken.
         }
 
-        protected override Task<HttpCommunicationClient> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
+        protected override Task<HttpCommunicationClient> CreateClientAsync(
+            string endpoint,
+            CancellationToken cancellationToken)
         {
             // clients that maintain persistent connections to a service should 
             // create that connection here.
@@ -46,9 +50,11 @@
             return true;
         }
 
-        private static IEnumerable<IExceptionHandler> CreateExceptionHandlers(IEnumerable<IExceptionHandler> additionalHandlers)
+        private static IEnumerable<IExceptionHandler> CreateExceptionHandlers(
+            IEnumerable<IExceptionHandler> additionalHandlers)
         {
-            return new[] { new HttpExceptionHandler() }.Union(additionalHandlers ?? Enumerable.Empty<IExceptionHandler>());
+            return new[] { new HttpExceptionHandler() }.Union(
+                additionalHandlers ?? Enumerable.Empty<IExceptionHandler>());
         }
     }
 }

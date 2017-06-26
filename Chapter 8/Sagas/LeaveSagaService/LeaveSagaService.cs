@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Fabric;
     using System.Net;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -18,8 +19,7 @@
 
     internal sealed class LeaveSagaService : StatelessService
     {
-        static IEndpointInstance endpointInstance = null;
-
+        static IEndpointInstance endpointInstance;
 
         public LeaveSagaService(StatelessServiceContext context)
             : base(context)
@@ -65,24 +65,35 @@
             return new HttpCommunicationListener(uriPrefix, uriPublished, this.ProcessInputRequest);
         }
 
-        private async Task<string> ProcessInputRequest(HttpListenerContext context, CancellationToken cancelRequest)
+        private async Task ProcessInputRequest(HttpListenerContext context, CancellationToken cancelRequest)
         {
+            string output = null;
             var employeeName = context.Request.QueryString["name"];
+            var startDate = context.Request.QueryString["startdate"];
+            var length = context.Request.QueryString["length"];
             try
             {
-                if (employeeName == string.Empty)
+                if (string.IsNullOrWhiteSpace(employeeName) && string.IsNullOrWhiteSpace(startDate) && string.IsNullOrWhiteSpace(length))
                 {
-                    return "name not specified";
+                    output = "parameters not specified";
                 }
-                await endpointInstance.Send("leavetransport", new LeaveRequest { EmployeeName = "asd" })
-                       .ConfigureAwait(false);
-                return;
+                else
+                {
+                    await endpointInstance.Send("leavetransport", new LeaveRequest { EmployeeName = employeeName, StartDate = DateTime.Parse(startDate), Length = int.Parse(length) });
+                    output = "request accepted";
+                }
+                using (var response = context.Response)
+                {
+                    if (output != null)
+                    {
+                        var outBytes = Encoding.UTF8.GetBytes(output);
+                        response.OutputStream.Write(outBytes, 0, outBytes.Length);
+                    }
+                }
             }
             catch (ApplicationException e)
             {
-                return "error";
             }
-
         }
     }
 }

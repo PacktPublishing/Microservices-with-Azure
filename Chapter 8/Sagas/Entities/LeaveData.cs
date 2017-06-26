@@ -10,14 +10,14 @@
 
         public Guid Id { get; set; }
 
-        public bool IsApprovedByHR { get; set; }
-
-        public bool IsApprovedByLineManager { get; set; }
-
         public string OriginalMessageId { get; set; }
 
         public string Originator { get; set; }
 
         public DateTime RequestDate { get; set; }
+
+        public int Length { get; set; }
+
+        public bool Approved { get; set; }
     }
 }

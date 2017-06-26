@@ -1,16 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Fabric;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.ServiceFabric.Services.Runtime;
-
-namespace LeaveSagaService
+﻿namespace LeaveSagaService
 {
+    using System;
+    using System.Diagnostics;
+    using System.Threading;
+
+    using Microsoft.ServiceFabric.Services.Runtime;
+
     internal static class Program
     {
         /// <summary>
-        /// This is the entry point of the service host process.
+        ///     This is the entry point of the service host process.
         /// </summary>
         private static void Main()
         {
@@ -21,10 +20,13 @@ namespace LeaveSagaService
                 // When Service Fabric creates an instance of this service type,
                 // an instance of the class is created in this host process.
 
-                ServiceRuntime.RegisterServiceAsync("LeaveSagaServiceType",
-                    context => new LeaveSagaService(context)).GetAwaiter().GetResult();
+                ServiceRuntime.RegisterServiceAsync("LeaveSagaServiceType", context => new LeaveSagaService(context))
+                    .GetAwaiter()
+                    .GetResult();
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(LeaveSagaService).Name);
+                ServiceEventSource.Current.ServiceTypeRegistered(
+                    Process.GetCurrentProcess().Id,
+                    typeof(LeaveSagaService).Name);
 
                 // Prevents this host process from terminating so services keep running.
                 Thread.Sleep(Timeout.Infinite);

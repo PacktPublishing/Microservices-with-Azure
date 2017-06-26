@@ -13,8 +13,10 @@
             try
             {
                 ServiceRuntime.RegisterServiceAsync(
-                    "LineManagerLeaveApprovalServiceType",
-                    context => new LineManagerLeaveApprovalService(context)).GetAwaiter().GetResult();
+                        "LineManagerLeaveApprovalServiceType",
+                        context => new LineManagerLeaveApprovalService(context))
+                    .GetAwaiter()
+                    .GetResult();
 
                 ServiceEventSource.Current.ServiceTypeRegistered(
                     Process.GetCurrentProcess().Id,

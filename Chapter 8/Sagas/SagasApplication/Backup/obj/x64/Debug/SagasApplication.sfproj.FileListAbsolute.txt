@@ -1,0 +1,1 @@
+D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\SagasApplication\obj\x64\Debug\SagasApplication.sfprojResolveAssemblyReference.cache

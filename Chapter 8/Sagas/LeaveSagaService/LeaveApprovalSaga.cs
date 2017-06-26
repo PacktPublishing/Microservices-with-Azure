@@ -2,7 +2,6 @@
 {
     using System;
     using System.Fabric;
-    using System.Net.Http;
     using System.Threading.Tasks;
 
     using Common;
@@ -14,38 +13,66 @@
 
     using NServiceBus;
 
-    class LeaveApprovalSaga : Saga<LeaveData>,IAmStartedByMessages<LeaveRequest>
+    class LeaveApprovalSaga : Saga<LeaveData>, IAmStartedByMessages<LeaveRequest>
     {
         public Task Handle(LeaveRequest message, IMessageHandlerContext context)
         {
-            AskForApproval(message.EmployeeName);
-        }
-
-        private async void AskForApproval(string employeeName)
-        {
-            var fabricClient = new FabricClient();
-            var communicationFactory = new HttpCommunicationClientFactory(new ServicePartitionResolver(() => fabricClient));
-            var serviceUri = new Uri(FabricRuntime.GetActivationContext().ApplicationName + "/LineManagerLeaveApprovalService");
-
-            ServicePartitionClient<HttpCommunicationClient> partitionClient =
-                new ServicePartitionClient<HttpCommunicationClient>(
-                    communicationFactory,
-                    serviceUri,
-                    new ServicePartitionKey());
-
-        await
-                partitionClient.InvokeWithRetryAsync(
-                    async (client) =>
-                        {
-                            await client.HttpClient.PutAsync(
-                                new Uri(client.Url, "Employee/" + employeeName), 
-                                new StringContent(String.Empty));
-                        });
+            var awaiter = this.AskForApproval(message.EmployeeName, message.StartDate, message.Length).GetAwaiter();
+            awaiter.GetResult();
+            return Task.CompletedTask;
         }
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<LeaveData> mapper)
         {
             mapper.ConfigureMapping<LeaveRequest>(message => message.EmployeeName).ToSaga(saga => saga.EmployeeName);
+        }
+
+        private async Task AskForApproval(string employeeName, DateTime startDate, int length)
+        {
+            Data.RequestDate = startDate;
+            Data.Length = length;
+            var isLeaveApproved = false;
+            var fabricClient = new FabricClient();
+            var communicationFactory =
+                new HttpCommunicationClientFactory(new ServicePartitionResolver(() => fabricClient));
+            var lineManagerServiceUri = new Uri(
+                FabricRuntime.GetActivationContext().ApplicationName + "/LineManagerLeaveApprovalService");
+            var lineManagerClient = new ServicePartitionClient<HttpCommunicationClient>(
+                communicationFactory,
+                lineManagerServiceUri,
+                new ServicePartitionKey());
+
+            var hrManagerServiceUri = new Uri(
+                FabricRuntime.GetActivationContext().ApplicationName + "/HRLeaveApprovalService");
+            var hrClient = new ServicePartitionClient<HttpCommunicationClient>(
+                communicationFactory,
+                hrManagerServiceUri,
+                new ServicePartitionKey());
+
+            await lineManagerClient.InvokeWithRetryAsync(
+                async client1 =>
+                    {
+                        var lineManagerResponse =
+                            await client1.HttpClient.GetStringAsync(
+                                new Uri(client1.Url, $"Employee?name={employeeName}&startDate={startDate}&length={length}"));
+                        if (lineManagerResponse == "true")
+                        {
+                            await hrClient.InvokeWithRetryAsync(
+                                async client2 =>
+                                    {
+                                        var hrLeaveApprovalResponse = await client2.HttpClient.GetStringAsync(
+                                            new Uri(client2.Url, $"Employee?name={employeeName}&startDate={startDate}&length={length}"));
+                                        if (hrLeaveApprovalResponse == "true")
+                                        {
+                                            isLeaveApproved = true;
+                                        }
+                                    });
+                        }
+                    });
+
+            Data.Approved = isLeaveApproved;
+            // Send notification to employee here and finally mark the saga as complete.
+            this.MarkAsComplete();
         }
     }
 }

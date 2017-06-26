@@ -14,3 +14,21 @@ D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Common\bin\Debug\M
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Common\bin\Debug\System.Fabric.xml
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Common\obj\Debug\Common.dll
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Common\obj\Debug\Common.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Common.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Common.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Data.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Data.Interfaces.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Internal.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Internal.Strings.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Services.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\System.Fabric.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\System.Fabric.Management.ServiceModel.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\System.Fabric.Management.ServiceModel.XmlSerializers.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\System.Fabric.Strings.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Data.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Data.Interfaces.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\Microsoft.ServiceFabric.Services.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\bin\Debug\System.Fabric.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\obj\Debug\Common.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Common\obj\Debug\Common.pdb

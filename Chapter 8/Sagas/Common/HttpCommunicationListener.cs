@@ -10,7 +10,6 @@
 
     public sealed class HttpCommunicationListener : ICommunicationListener
     {
-        private StatelessServiceContext context;
         private readonly HttpListener httpListener;
 
         private readonly Func<HttpListenerContext, CancellationToken, Task> processRequest;
@@ -18,6 +17,8 @@
         private readonly CancellationTokenSource processRequestsCancellation = new CancellationTokenSource();
 
         private readonly string publishUri;
+
+        private StatelessServiceContext context;
 
         public HttpCommunicationListener(
             string uriPrefix,
@@ -59,11 +60,10 @@
                 var request = await this.httpListener.GetContextAsync();
 
                 // The ContinueWith forces rethrowing the exception if the task fails.
-                Task requestTask =
-                    this.processRequest(request, this.processRequestsCancellation.Token)
-                        .ContinueWith(
-                            async t => await t /* Rethrow unhandled exception */,
-                            TaskContinuationOptions.OnlyOnFaulted);
+                Task requestTask = this.processRequest(request, this.processRequestsCancellation.Token)
+                    .ContinueWith(
+                        async t => await t /* Rethrow unhandled exception */,
+                        TaskContinuationOptions.OnlyOnFaulted);
             }
         }
     }

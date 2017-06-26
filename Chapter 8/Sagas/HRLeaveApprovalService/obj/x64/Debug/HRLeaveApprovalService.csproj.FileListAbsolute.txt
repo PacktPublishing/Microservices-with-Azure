@@ -17,3 +17,24 @@ D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\HRLeaveApprovalSer
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\HRLeaveApprovalService\bin\x64\Debug\en-us\System.Fabric.Strings.resources.dll
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\HRLeaveApprovalService\obj\x64\Debug\HRLeaveApprovalService.exe
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\HRLeaveApprovalService\obj\x64\Debug\HRLeaveApprovalService.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\HRLeaveApprovalService.exe.config
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\HRLeaveApprovalService.exe
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\HRLeaveApprovalService.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Common.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Data.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Data.Interfaces.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Internal.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Internal.Strings.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Services.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\System.Fabric.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\System.Fabric.Management.ServiceModel.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\System.Fabric.Management.ServiceModel.XmlSerializers.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\System.Fabric.Strings.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Common.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Data.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Data.Interfaces.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\Microsoft.ServiceFabric.Services.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\bin\x64\Debug\System.Fabric.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\obj\x64\Debug\HRLeaveApprovalService.csprojResolveAssemblyReference.cache
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\obj\x64\Debug\HRLeaveApprovalService.exe
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\HRLeaveApprovalService\obj\x64\Debug\HRLeaveApprovalService.pdb

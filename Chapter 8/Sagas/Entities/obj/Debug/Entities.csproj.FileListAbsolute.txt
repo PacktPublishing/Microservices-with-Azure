@@ -5,3 +5,11 @@ D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Entities\bin\Debug
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Entities\bin\Debug\NServiceBus.Core.xml
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Entities\obj\Debug\Entities.dll
 D:\Source Control\microserviceswithazure-code\chapter-6\Sagas\Entities\obj\Debug\Entities.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\bin\Debug\Entities.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\bin\Debug\Entities.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\bin\Debug\NServiceBus.Core.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\bin\Debug\NServiceBus.Core.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\bin\Debug\NServiceBus.Core.xml
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\obj\Debug\Entities.dll
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\obj\Debug\Entities.pdb
+D:\Source Control\microserviceswithazure-code\Packt\Microservices-with-Azure\Chapter 8\Sagas\Entities\obj\Debug\Entities.csprojResolveAssemblyReference.cache

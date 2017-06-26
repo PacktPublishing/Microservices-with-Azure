@@ -1,0 +1,243 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NServiceBus.Persistence.AzureStorage</name>
+    </assembly>
+    <members>
+        <member name="M:NServiceBus.CloudTableExtensions.DeleteIgnoringNotFound(Microsoft.WindowsAzure.Storage.Table.CloudTable,Microsoft.WindowsAzure.Storage.Table.ITableEntity)">
+            <summary>
+            Safely deletes an entitym ignoring not found exception.
+            </summary>
+            <param name="table"></param>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NServiceBus.ConfigureAzureStorage">
+            <summary>
+            Configuration extensions for all Azure storage settings
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureStorage.ConnectionString(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence},System.String)">
+            <summary>
+            Connection string to use for azure Saga, Timeout and Subscription storage.
+            </summary>
+            <param name="config">The configuration.</param>
+            <param name="connectionString">The connection string.</param>
+        </member>
+        <member name="T:NServiceBus.Config.AzureSagaPersisterConfig">
+            <summary>
+            Config section for the Azure Saga Persister
+            </summary>
+        </member>
+        <member name="P:NServiceBus.Config.AzureSagaPersisterConfig.CreateSchema">
+            <summary>
+            Determines if the database should be auto updated
+            </summary>
+        </member>
+        <member name="T:NServiceBus.Persistence.AzureStorage.SecondaryIndices.LRUCache`2">
+            <summary>
+            This is a simple implementation of LRU cache.
+            </summary>
+            <remarks>
+            The LRUCache uses two fields in every operation:
+            <see cref="F:NServiceBus.Persistence.AzureStorage.SecondaryIndices.LRUCache`2.lru" /> - to provide last-recently-used behavior
+            <see cref="F:NServiceBus.Persistence.AzureStorage.SecondaryIndices.LRUCache`2.items" /> - to provide key-value mapping with O(1)
+            Locking everywhere ensures that these two parts can be updated atomically.
+            ConcurrentDictionary does not ensure lru behavior as it cannot remove the last item that was used,
+            hence a custom implementation for a thread safe LRU has been introduced.
+            </remarks>
+        </member>
+        <member name="M:NServiceBus.Persistence.AzureStorage.SecondaryIndices.SecondaryIndexPersister.InvalidateCacheIfAny(System.String,System.Object,System.Type)">
+            <summary>
+            Invalidates the secondary index cache if any exists for the specified property value.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.Persistence.AzureStorage.SecondaryIndices.SecondaryIndexPersister.CreateIndexingOnlyEntity(NServiceBus.Persistence.AzureStorage.SecondaryIndices.PartitionRowKeyTuple,System.Guid)">
+            <summary>
+            Creates an indexing only entity, without payload of the primary.
+            </summary>
+        </member>
+        <member name="T:NServiceBus.Persistence.AzureStorage.AzureSagaPersister.SagaInstanceMetadata">
+            <summary>
+            Holds saga instance related metadata in a scope of a <see cref="T:NServiceBus.Extensibility.ContextBag" />.
+            </summary>
+        </member>
+        <member name="P:NServiceBus.Persistence.AzureStorage.TimeoutDataEntity.Destination">
+            <summary>
+            The address of the client who requested the timeout.
+            </summary>
+        </member>
+        <member name="P:NServiceBus.Persistence.AzureStorage.TimeoutDataEntity.SagaId">
+            <summary>
+            The saga ID.
+            </summary>
+        </member>
+        <member name="P:NServiceBus.Persistence.AzureStorage.TimeoutDataEntity.StateAddress">
+            <summary>
+            Additional state.
+            </summary>
+        </member>
+        <member name="P:NServiceBus.Persistence.AzureStorage.TimeoutDataEntity.Time">
+            <summary>
+            The time at which the saga ID expired.
+            </summary>
+        </member>
+        <member name="P:NServiceBus.Persistence.AzureStorage.TimeoutDataEntity.OwningTimeoutManager">
+            <summary>
+            The timeout manager that owns this particular timeout
+            </summary>
+        </member>
+        <member name="P:NServiceBus.Persistence.AzureStorage.TimeoutDataEntity.Headers">
+            <summary>
+            The serialized headers
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageSagaPersistence.Setup(NServiceBus.Features.FeatureConfigurationContext)">
+            <summary>
+            See <see cref="M:NServiceBus.Features.Feature.Setup(NServiceBus.Features.FeatureConfigurationContext)"/>
+            </summary>
+        </member>
+        <member name="T:NServiceBus.ConfigureAzureSagaStorage">
+            <summary>
+            Configuration extensions for the sagas storage
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureSagaStorage.ConnectionString(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Sagas},System.String)">
+            <summary>
+            Connection string to use for sagas storage.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureSagaStorage.CreateSchema(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Sagas},System.Boolean)">
+            <summary>
+            Should an attempt be made to create saga storage table or not.
+            <remarks>Operation will fail if connection string does not allow access to create storage tables</remarks>
+            </summary>
+        </member>
+        <member name="M:NServiceBus.AzureStorageSubscriptionPersistence.Setup(NServiceBus.Features.FeatureConfigurationContext)">
+            <summary>
+            See <see cref="M:NServiceBus.Features.Feature.Setup(NServiceBus.Features.FeatureConfigurationContext)"/>
+            </summary>
+        </member>
+        <member name="T:NServiceBus.ConfigureAzureSubscriptionStorage">
+            <summary>
+            Configuration extensions for the subscription storage
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureSubscriptionStorage.ConnectionString(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Subscriptions},System.String)">
+            <summary>
+            Connection string to use for subscriptions storage.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureSubscriptionStorage.TableName(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Subscriptions},System.String)">
+            <summary>
+            Table name to create in Azure storage account to persist subscriptions.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureSubscriptionStorage.CreateSchema(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Subscriptions},System.Boolean)">
+            <summary>
+            Should an attempt at startup be made to verify if subscriptions storage table exists or not and if not create it.
+            <remarks>Operation will fail if connection string does not allow access to create storage tables</remarks>
+            </summary>
+        </member>
+        <member name="F:NServiceBus.AzureTimeoutStorageDefaults.TimeoutManagerDataTableName">
+            <summary>
+            Azure Storage table name for Timeout Manager Data. Default is 'TimeoutManagerDataTable'.
+            </summary>
+        </member>
+        <member name="F:NServiceBus.AzureTimeoutStorageDefaults.TimeoutDataTableName">
+            <summary>
+            Azure Storage table name for Timeout Data. Default is 'TimeoutDataTableName'.
+            </summary>
+        </member>
+        <member name="F:NServiceBus.AzureTimeoutStorageDefaults.CatchUpInterval">
+            <summary>
+            Catchup interval in seconds. Default is 1 hour (3600 seconds).
+            </summary>
+        </member>
+        <member name="F:NServiceBus.AzureTimeoutStorageDefaults.PartitionKeyScope">
+            <summary>
+            DateTime format used for creating the Partition Key Scope value. Default value is 'yyyyMMddHH'.
+            </summary>
+        </member>
+        <member name="F:NServiceBus.AzureTimeoutStorageDefaults.CreateSchema">
+            <summary>
+            Flag to indicate that an Azure Storage schema should be created if it is not found. Defaults to true.
+            </summary>
+        </member>
+        <member name="F:NServiceBus.AzureTimeoutStorageDefaults.TimeoutStateContainerName">
+            <summary>
+            Azure Storage blob name for Timeout State. Default is 'timeoutstate'.
+            </summary>
+        </member>
+        <member name="T:NServiceBus.ConfigureAzureTimeoutStorage">
+            <summary>
+            Configuration extensions for the subscription storage
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureTimeoutStorage.ConnectionString(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Timeouts},System.String)">
+            <summary>
+            Connection string to use for timeouts storage.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureTimeoutStorage.CreateSchema(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Timeouts},System.Boolean)">
+            <summary>
+            Should an attempt at startup be made to verify if storage tables for timeouts exist or not and if not create those.
+            <remarks>Operation will fail if connection string does not allow access to create storage tables</remarks>
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureTimeoutStorage.TimeoutManagerDataTableName(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Timeouts},System.String)">
+            <summary>
+            Set the name of the table where the timeout manager stores it's internal state.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureTimeoutStorage.TimeoutDataTableName(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Timeouts},System.String)">
+            <summary>
+             Set the name of the table where the timeouts themselves are stored.
+            </summary>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureTimeoutStorage.CatchUpInterval(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Timeouts},System.Int32)">
+            <summary>
+             Set the catchup interval in seconds for missed timeouts.
+            </summary>
+            <param name="catchUpInterval">Catch up interval in seconds</param>
+            <param name="config"></param>
+        </member>
+        <member name="M:NServiceBus.ConfigureAzureTimeoutStorage.PartitionKeyScope(NServiceBus.PersistenceExtensions{NServiceBus.AzureStoragePersistence,NServiceBus.Persistence.StorageType.Timeouts},System.String)">
+            <summary>
+             Time range used as partition key value for all timeouts.
+            </summary>
+            <param name="partitionKeyScope">Partition key DateTime format string.</param>
+            <param name="config"></param>
+            <remarks>For optimal performance, this should be in line with the CatchUpInterval.</remarks>
+        </member>
+        <member name="M:NServiceBus.AzureStorageTimeoutPersistence.Setup(NServiceBus.Features.FeatureConfigurationContext)">
+            <summary>
+            See <see cref="M:NServiceBus.Features.Feature.Setup(NServiceBus.Features.FeatureConfigurationContext)"/>
+            </summary>
+        </member>
+        <member name="M:NServiceBus.Unicast.Subscriptions.AzureSubscriptionStorage.Subscribe(NServiceBus.Unicast.Subscriptions.MessageDrivenSubscriptions.Subscriber,NServiceBus.Unicast.Subscriptions.MessageType,NServiceBus.Extensibility.ContextBag)">
+            <summary>
+            Subscribes the given client to messages of a given type.
+            </summary>
+            <param name="subscriber">The subscriber to subscribe</param>
+            <param name="messageType">The types of messages that are being subscribed to</param>
+            <param name="context">The current context</param>
+        </member>
+        <member name="M:NServiceBus.Unicast.Subscriptions.AzureSubscriptionStorage.Unsubscribe(NServiceBus.Unicast.Subscriptions.MessageDrivenSubscriptions.Subscriber,NServiceBus.Unicast.Subscriptions.MessageType,NServiceBus.Extensibility.ContextBag)">
+            <summary>
+            Removes a subscription
+            </summary>
+            <param name="subscriber">The subscriber to unsubscribe</param>
+            <param name="messageType">The message type to unsubscribed</param>
+            <param name="context">The current pipeline context</param>
+        </member>
+        <member name="M:NServiceBus.Unicast.Subscriptions.AzureSubscriptionStorage.GetSubscriberAddressesForMessage(System.Collections.Generic.IEnumerable{NServiceBus.Unicast.Subscriptions.MessageType},NServiceBus.Extensibility.ContextBag)">
+            <summary>
+            Returns the subscription address based on message type
+            </summary>
+            <param name="messageTypes">Types of messages that subscription addresses should be found for</param>
+            <param name="context">The current pipeline context</param>
+            <returns>Subscription addresses that were found for the provided messageTypes</returns>
+        </member>
+    </members>
+</doc>

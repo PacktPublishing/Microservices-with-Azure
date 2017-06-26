@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Fabric;
     using System.Net;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -23,19 +24,21 @@
             return new[] { new ServiceInstanceListener(context => this.CreateInputListener(context)) };
         }
 
+        private static async Task ProcessInputRequest(HttpListenerContext context, CancellationToken cancelRequest)
+        {
+            using (var response = context.Response)
+            {
+                var outBytes = Encoding.UTF8.GetBytes("true");
+                response.OutputStream.Write(outBytes, 0, outBytes.Length);
+            }
+        }
+
         private ICommunicationListener CreateInputListener(StatelessServiceContext context)
         {
             var inputEndpoint = context.CodePackageActivationContext.GetEndpoint("ServiceEndpoint");
             var uriPrefix = $"{inputEndpoint.Protocol}://+:{inputEndpoint.Port}/linemanagerleaveapprovalservice/";
             var uriPublished = uriPrefix.Replace("+", FabricRuntime.GetNodeContext().IPAddressOrFQDN);
             return new HttpCommunicationListener(uriPrefix, uriPublished, ProcessInputRequest);
-        }
-
-        private static async Task ProcessInputRequest(HttpListenerContext context, CancellationToken cancelRequest)
-        {
-            var employeeName = context.Request.QueryString["EmployeeName"];
-            var dateOfRequest = context.Request.QueryString["DateOfRequest"];
-            await Task.FromResult(true);
         }
     }
 }
