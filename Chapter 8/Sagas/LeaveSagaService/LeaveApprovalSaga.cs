@@ -17,6 +17,7 @@
     {
         public Task Handle(LeaveRequest message, IMessageHandlerContext context)
         {
+            ServiceEventSource.Current.Message($"Leave approval message received for employee: {message.EmployeeName}");
             var awaiter = this.AskForApproval(message.EmployeeName, message.StartDate, message.Length).GetAwaiter();
             awaiter.GetResult();
             return Task.CompletedTask;
@@ -57,6 +58,7 @@
                                 new Uri(client1.Url, $"Employee?name={employeeName}&startDate={startDate}&length={length}"));
                         if (lineManagerResponse == "true")
                         {
+                            ServiceEventSource.Current.Message($"Line manager approval received for employee: {employeeName}");
                             await hrClient.InvokeWithRetryAsync(
                                 async client2 =>
                                     {
@@ -64,6 +66,7 @@
                                             new Uri(client2.Url, $"Employee?name={employeeName}&startDate={startDate}&length={length}"));
                                         if (hrLeaveApprovalResponse == "true")
                                         {
+                                            ServiceEventSource.Current.Message($"HR approval received for employee: {employeeName}");
                                             isLeaveApproved = true;
                                         }
                                     });
@@ -72,6 +75,7 @@
 
             Data.Approved = isLeaveApproved;
             // Send notification to employee here and finally mark the saga as complete.
+            ServiceEventSource.Current.Message($"Leave approval process completed for employee: {employeeName}");
             this.MarkAsComplete();
         }
     }
