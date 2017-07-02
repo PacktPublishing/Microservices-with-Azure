@@ -8,6 +8,9 @@ Building Microservice-based application is complicated. Therefore, we will take 
 
 Finally, you will be introduced to advanced topics such as Serverless computing and DevOps using Service Fabric, to help you undertake your next venture with confidence.
 
+## More on Companion Website
+The companion website has further content to enrich your knowledge. Therefore, consider bookmarking the companion website to stay in touch: https://microserviceswithazure.com
+
 ## Instructions and Navigations
 All of the code is organized into folders. Each folder starts with a number followed by the application name. For example, Chapter04
 
