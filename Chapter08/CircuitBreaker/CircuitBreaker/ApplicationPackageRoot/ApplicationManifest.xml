@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="CircuitBreakerType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="WeatherService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="WeatherService_PartitionCount" DefaultValue="1" />
+    <Parameter Name="WeatherService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="WeatherService_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="CompositeWeb_InstanceCount" DefaultValue="-1" />
+  </Parameters>
+  <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
+       should match the Name and Version attributes of the ServiceManifest element defined in the 
+       ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="WeatherServicePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="CompositeWebPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <DefaultServices>
+    <Service Name="WeatherService">
+      <StatefulService ServiceTypeName="WeatherServiceType" TargetReplicaSetSize="[WeatherService_TargetReplicaSetSize]" MinReplicaSetSize="[WeatherService_MinReplicaSetSize]">
+        <NamedPartition>
+          <Partition Name="basic" />
+          <Partition Name="advanced" />
+        </NamedPartition>
+      </StatefulService>
+    </Service>
+    <Service Name="CompositeWeb">
+      <StatelessService ServiceTypeName="CompositeWebType" InstanceCount="[CompositeWeb_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+  </DefaultServices>
+</ApplicationManifest>

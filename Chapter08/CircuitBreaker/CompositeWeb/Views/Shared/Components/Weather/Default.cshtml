@@ -1,0 +1,8 @@
+﻿@model Contracts.WeatherReport
+<h1>Temperature: @Model.Temperature &#176;C</h1>
+<h1>Conditions: @Model.WeatherConditions</h1>
+<br />
+<h4>Reported At: @Model.ReportTime.ToString("hh:mm:ss")</h4>
+<h4>Circuit State: @Model.CircuitState</h4>
+<h4>Request Duration: @Model.ResponseTimeInSeconds seconds</h4>
+

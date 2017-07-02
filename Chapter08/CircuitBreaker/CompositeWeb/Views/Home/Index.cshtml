@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Http
+@model List<Contracts.RequestLog>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Weather Widget</h2>
+        <div id="weatherView" style="border: 1px solid black; padding: 10px; height: 300px;">
+            @await Component.InvokeAsync("Weather")
+        </div>
+    </div>
+    <div class="col-md-offset-4 col-md-4">
+        <h2>Status</h2>
+        <div id="alert-success" class="alert alert-info" style="padding: 5px;"><h4>The widget on this screen refreshes every 10 seconds.</h4></div>
+        <br />
+        <input id="cancelRefresh" class="btn btn-danger btn-block" type="button" value="Disable Auto Refresh" />
+    </div>
+</div>
+<h2>Response Log</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Request Time</th>
+            <th>Circuit Status</th>
+            <th>Request Duration(sec.)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in Model)
+        {
+            var rowClass = "success";
+            if (log.CircuitState.Equals("closed", StringComparison.OrdinalIgnoreCase))
+            {
+                rowClass = "danger";
+            }
+            <tr class="@rowClass">
+                <td>@log.RequestTime.ToString("hh:mm:ss")</td>
+                <td>@log.CircuitState</td>
+                <td>@log.RequestDuration</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        var timeOut = setTimeout(function () {
+            $('#alert-success').slideUp('slow').fadeOut(function () {
+                window.location.reload();
+            });
+        }, 10000);
+
+        $('#cancelRefresh').click(function () {
+            clearTimeout(timeOut);
+            return false;
+        });
+    });
+</script>

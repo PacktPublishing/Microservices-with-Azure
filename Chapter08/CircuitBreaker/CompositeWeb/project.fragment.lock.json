@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "exports": {
+    "Communication/1.0.0": {
+      "type": "project",
+      "framework": ".NETStandard,Version=v1.1",
+      "compile": {
+        "bin/Debug/Communication.dll": {}
+      },
+      "runtime": {
+        "../packages/Microsoft.ServiceFabric.Services.2.4.145/lib/net45/Microsoft.ServiceFabric.Services.dll": {},
+        "C:/Windows/Microsoft.NET/assembly/GAC_64/Microsoft.ServiceFabric.Data.Interfaces/v4.0_5.0.0.0__31bf3856ad364e35/Microsoft.ServiceFabric.Data.Interfaces.dll": {},
+        "bin/Debug/Communication.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/Communication.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}
