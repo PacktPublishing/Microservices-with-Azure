@@ -50,7 +50,4 @@ Studio Team Service for executing the practical examples in this book.
 
 * [Mastering Identity and Access Management with Microsoft Azure]( https://www.packtpub.com/virtualization-and-cloud/mastering-identity-and-access-management-microsoft-azure?utm_source=github&utm_medium=repository&utm_content=9781785889448 )
 
-### Suggestions and Feedback
-[Click here]( https://docs.google.com/forms/d/e/1FAIpQLSe5qwunkGf6PUvzPirPDtuy1Du5Rlzew23UBp2S-P3wB-GcwQ/viewform ) if you have any feedback or suggestions.
-
 
